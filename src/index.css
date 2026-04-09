@@ -5,13 +5,13 @@
 @layer base {
   :root {
     /* Dark theme by default - matching origin */
-    --background: 0 0% 7%;
+    --background: 0 0% 14%;
     --foreground: 0 0% 96%;
 
-    --card: 0 0% 9%;
+    --card: 0 0% 17%;
     --card-foreground: 0 0% 96%;
 
-    --popover: 0 0% 9%;
+    --popover: 0 0% 17%;
     --popover-foreground: 0 0% 96%;
 
     --primary: 217 91% 60%;

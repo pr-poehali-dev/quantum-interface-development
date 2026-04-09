@@ -92,7 +92,7 @@ function ServicesSection() {
           {services.map((s, i) => (
             <div
               key={s.title}
-              className={`group bg-black p-8 transition-all duration-700 hover:bg-white/5 md:p-12 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
+              className={`group bg-[#222222] p-8 transition-all duration-700 hover:bg-white/5 md:p-12 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
               style={{ transitionDelay: `${i * 100}ms` }}
             >
               <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-white/5 transition-all group-hover:bg-white/10">
@@ -305,7 +305,7 @@ export default function Index() {
   const navItems = ["Главная", "Услуги", "Проекты", "Контакты"]
 
   return (
-    <main className="relative w-full bg-black">
+    <main className="relative w-full bg-[#222222]">
       <CustomCursor />
       <GrainOverlay />
 
