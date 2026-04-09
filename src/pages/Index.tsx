@@ -2,7 +2,7 @@ import { CustomCursor } from "@/components/custom-cursor"
 import { GrainOverlay } from "@/components/grain-overlay"
 import { MagneticButton } from "@/components/magnetic-button"
 import { useReveal } from "@/hooks/use-reveal"
-import { useRef, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import Icon from "@/components/ui/icon"
 
 const IMG_HERO = "https://cdn.poehali.dev/projects/43a658d9-e345-4735-a002-265beb090970/files/db597c17-1233-42d1-82b6-43ed55652a6a.jpg"
@@ -11,7 +11,7 @@ const IMG_APP = "https://cdn.poehali.dev/projects/43a658d9-e345-4735-a002-265beb
 
 function HeroSection({ scrollToSection }: { scrollToSection: (i: number) => void }) {
   return (
-    <section className="relative flex min-h-screen w-screen shrink-0 flex-col overflow-hidden">
+    <section className="relative flex min-h-screen w-full flex-col overflow-hidden">
       <div className="absolute inset-0 z-0">
         <img src={IMG_HERO} alt="Видеонаблюдение" className="h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/20" />
@@ -81,7 +81,7 @@ function ServicesSection() {
   ]
 
   return (
-    <section ref={ref} className="flex min-h-screen w-screen shrink-0 flex-col justify-center px-6 py-24 md:px-16">
+    <section ref={ref} className="flex min-h-screen w-full flex-col justify-center px-6 py-24 md:px-16">
       <div className="mx-auto w-full max-w-7xl">
         <div className={`mb-16 transition-all duration-700 ${isVisible ? "translate-y-0 opacity-100" : "-translate-y-8 opacity-0"}`}>
           <p className="mb-2 font-mono text-xs text-white/40">/ Что мы делаем</p>
@@ -112,7 +112,7 @@ function ProjectsSection() {
   const { ref, isVisible } = useReveal(0.2)
 
   return (
-    <section ref={ref} className="flex min-h-screen w-screen shrink-0 flex-col justify-center px-6 py-24 md:px-16">
+    <section ref={ref} className="flex min-h-screen w-full flex-col justify-center px-6 py-24 md:px-16">
       <div className="mx-auto w-full max-w-7xl">
         <div className={`mb-16 transition-all duration-700 ${isVisible ? "translate-x-0 opacity-100" : "-translate-x-8 opacity-0"}`}>
           <p className="mb-2 font-mono text-xs text-white/40">/ Реализованные объекты</p>
@@ -178,7 +178,7 @@ function ContactSection() {
   }
 
   return (
-    <section ref={ref} className="flex min-h-screen w-screen shrink-0 flex-col justify-center px-6 py-24 md:px-16">
+    <section ref={ref} className="flex min-h-screen w-full flex-col justify-center px-6 py-24 md:px-16">
       <div className="mx-auto w-full max-w-7xl">
         <div className="grid gap-16 md:grid-cols-2">
           <div className={`flex flex-col justify-center transition-all duration-700 ${isVisible ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"}`}>
@@ -267,103 +267,51 @@ function ContactSection() {
   )
 }
 
+const sectionIds = ["hero", "services", "projects", "contacts"]
+
 export default function Index() {
-  const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [currentSection, setCurrentSection] = useState(0)
   const [isLoaded, setIsLoaded] = useState(false)
-  const touchStartY = useRef(0)
-  const touchStartX = useRef(0)
-  const scrollThrottleRef = useRef<number>()
 
   useEffect(() => {
     const t = setTimeout(() => setIsLoaded(true), 300)
     return () => clearTimeout(t)
   }, [])
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const idx = sectionIds.indexOf(entry.target.id)
+            if (idx !== -1) setCurrentSection(idx)
+          }
+        })
+      },
+      { threshold: 0.4 }
+    )
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id)
+      if (el) observer.observe(el)
+    })
+    return () => observer.disconnect()
+  }, [])
+
   const scrollToSection = (index: number) => {
-    if (scrollContainerRef.current) {
-      const sectionWidth = scrollContainerRef.current.offsetWidth
-      scrollContainerRef.current.scrollTo({ left: sectionWidth * index, behavior: "smooth" })
-      setCurrentSection(index)
-    }
+    const el = document.getElementById(sectionIds[index])
+    if (el) el.scrollIntoView({ behavior: "smooth" })
   }
-
-  useEffect(() => {
-    const handleTouchStart = (e: TouchEvent) => {
-      touchStartY.current = e.touches[0].clientY
-      touchStartX.current = e.touches[0].clientX
-    }
-    const handleTouchMove = (e: TouchEvent) => {
-      if (Math.abs(e.touches[0].clientY - touchStartY.current) > 10) e.preventDefault()
-    }
-    const handleTouchEnd = (e: TouchEvent) => {
-      const deltaY = touchStartY.current - e.changedTouches[0].clientY
-      const deltaX = touchStartX.current - e.changedTouches[0].clientX
-      if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 50) {
-        if (deltaY > 0 && currentSection < 3) scrollToSection(currentSection + 1)
-        else if (deltaY < 0 && currentSection > 0) scrollToSection(currentSection - 1)
-      }
-    }
-    const container = scrollContainerRef.current
-    if (container) {
-      container.addEventListener("touchstart", handleTouchStart, { passive: true })
-      container.addEventListener("touchmove", handleTouchMove, { passive: false })
-      container.addEventListener("touchend", handleTouchEnd, { passive: true })
-    }
-    return () => {
-      if (container) {
-        container.removeEventListener("touchstart", handleTouchStart)
-        container.removeEventListener("touchmove", handleTouchMove)
-        container.removeEventListener("touchend", handleTouchEnd)
-      }
-    }
-  }, [currentSection])
-
-  useEffect(() => {
-    const handleWheel = (e: WheelEvent) => {
-      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        e.preventDefault()
-        if (!scrollContainerRef.current) return
-        scrollContainerRef.current.scrollBy({ left: e.deltaY, behavior: "instant" })
-        const sectionWidth = scrollContainerRef.current.offsetWidth
-        const newSection = Math.round(scrollContainerRef.current.scrollLeft / sectionWidth)
-        if (newSection !== currentSection) setCurrentSection(newSection)
-      }
-    }
-    const container = scrollContainerRef.current
-    if (container) container.addEventListener("wheel", handleWheel, { passive: false })
-    return () => { if (container) container.removeEventListener("wheel", handleWheel) }
-  }, [currentSection])
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (scrollThrottleRef.current) return
-      scrollThrottleRef.current = requestAnimationFrame(() => {
-        if (!scrollContainerRef.current) { scrollThrottleRef.current = undefined; return }
-        const sectionWidth = scrollContainerRef.current.offsetWidth
-        const newSection = Math.round(scrollContainerRef.current.scrollLeft / sectionWidth)
-        if (newSection !== currentSection && newSection >= 0 && newSection <= 3) setCurrentSection(newSection)
-        scrollThrottleRef.current = undefined
-      })
-    }
-    const container = scrollContainerRef.current
-    if (container) container.addEventListener("scroll", handleScroll, { passive: true })
-    return () => {
-      if (container) container.removeEventListener("scroll", handleScroll)
-      if (scrollThrottleRef.current) cancelAnimationFrame(scrollThrottleRef.current)
-    }
-  }, [currentSection])
 
   const navItems = ["Главная", "Услуги", "Проекты", "Контакты"]
 
   return (
-    <main className="relative h-screen w-full overflow-hidden bg-black">
+    <main className="relative w-full bg-black">
       <CustomCursor />
       <GrainOverlay />
 
-      <nav className={`fixed left-0 right-0 top-0 z-50 flex items-center justify-between px-6 py-5 transition-opacity duration-700 md:px-12 ${isLoaded ? "opacity-100" : "opacity-0"}`}>
+      <nav className={`fixed left-0 right-0 top-0 z-50 flex items-center justify-between px-6 py-5 backdrop-blur-sm transition-opacity duration-700 md:px-12 ${isLoaded ? "opacity-100" : "opacity-0"}`}>
         <button onClick={() => scrollToSection(0)} className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/10 backdrop-blur-sm">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/10">
             <Icon name="Shield" size={16} className="text-white" />
           </div>
           <span className="font-sans text-base font-semibold tracking-tight text-white">SafeHome</span>
@@ -396,19 +344,10 @@ export default function Index() {
         ))}
       </div>
 
-      <div
-        ref={scrollContainerRef}
-        data-scroll-container
-        className={`relative z-10 flex h-screen overflow-x-auto overflow-y-hidden transition-opacity duration-700 ${isLoaded ? "opacity-100" : "opacity-0"}`}
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-      >
-        <HeroSection scrollToSection={scrollToSection} />
-        <ServicesSection />
-        <ProjectsSection />
-        <ContactSection />
-      </div>
-
-      <style>{`div::-webkit-scrollbar { display: none; }`}</style>
+      <div id="hero"><HeroSection scrollToSection={scrollToSection} /></div>
+      <div id="services"><ServicesSection /></div>
+      <div id="projects"><ProjectsSection /></div>
+      <div id="contacts"><ContactSection /></div>
     </main>
   )
 }
