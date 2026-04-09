@@ -5,26 +5,26 @@
 @layer base {
   :root {
     /* Dark theme by default - matching origin */
-    --background: 0 0% 14%;
+    --background: 222 47% 8%;
     --foreground: 0 0% 96%;
 
-    --card: 0 0% 17%;
+    --card: 222 40% 11%;
     --card-foreground: 0 0% 96%;
 
-    --popover: 0 0% 17%;
+    --popover: 222 40% 11%;
     --popover-foreground: 0 0% 96%;
 
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 96%;
+    --primary: 199 100% 50%;
+    --primary-foreground: 222 47% 8%;
 
-    --secondary: 0 0% 15%;
+    --secondary: 222 35% 16%;
     --secondary-foreground: 0 0% 96%;
 
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 40%;
+    --muted: 222 35% 16%;
+    --muted-foreground: 220 15% 55%;
 
-    --accent: 35 82% 55%;
-    --accent-foreground: 0 0% 96%;
+    --accent: 199 100% 50%;
+    --accent-foreground: 222 47% 8%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 96%;
