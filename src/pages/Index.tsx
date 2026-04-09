@@ -195,11 +195,11 @@ function ContactSection() {
             </p>
 
             <div className="space-y-5">
-              <a href="tel:+74951234567" className="group flex items-center gap-3 text-white/60 transition-colors hover:text-white">
+              <a href="tel:+79781348887" className="group flex items-center gap-3 text-white/60 transition-colors hover:text-white">
                 <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/5">
                   <Icon name="Phone" size={15} className="text-white/60" />
                 </div>
-                <span className="text-sm">+7 (495) 123-45-67</span>
+                <span className="text-sm">+7 (978) 134-88-87</span>
               </a>
               <a href="mailto:info@safehome.ru" className="group flex items-center gap-3 text-white/60 transition-colors hover:text-white">
                 <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/5">
