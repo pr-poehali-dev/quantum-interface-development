@@ -176,11 +176,18 @@ function ContactSection() {
     e.preventDefault()
     if (!formData.name || !formData.phone) return
     setIsSubmitting(true)
-    await new Promise((r) => setTimeout(r, 1200))
-    setIsSubmitting(false)
-    setSubmitSuccess(true)
-    setFormData({ name: "", phone: "", message: "" })
-    setTimeout(() => setSubmitSuccess(false), 5000)
+    try {
+      await fetch("https://functions.poehali.dev/de6f7dc7-6947-4e57-bfa6-7bd37f5f21dc", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
+      setSubmitSuccess(true)
+      setFormData({ name: "", phone: "", message: "" })
+      setTimeout(() => setSubmitSuccess(false), 5000)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
