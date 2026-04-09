@@ -21,7 +21,7 @@ function HeroSection({ scrollToSection }: { scrollToSection: (i: number) => void
         <div className="max-w-2xl">
           <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-1.5 backdrop-blur-sm">
             <div className="h-2 w-2 animate-pulse rounded-full bg-green-400" />
-            <span className="font-mono text-xs text-white/80">Монтаж в Москве и области</span>
+            <span className="font-mono text-xs text-white/80">Монтаж по всему Крыму</span>
           </div>
 
           <h1 className="mb-6 font-sans text-5xl font-light leading-[1.05] tracking-tight text-white md:text-7xl lg:text-8xl">
@@ -211,7 +211,7 @@ function ContactSection() {
                 <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/5">
                   <Icon name="MapPin" size={15} className="text-white/60" />
                 </div>
-                <span className="text-sm">Москва и Московская область</span>
+                <span className="text-sm">Крым</span>
               </div>
             </div>
           </div>
