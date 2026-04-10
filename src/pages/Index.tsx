@@ -332,7 +332,7 @@ export default function Index() {
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-400 to-blue-500">
             <Icon name="Shield" size={16} className="text-white" />
           </div>
-          <span className="font-sans text-base font-bold tracking-tight text-white">SafeHome</span>
+          <span className="font-sans text-base font-bold tracking-tight text-white">MirHomes</span>
         </button>
 
         <div className="hidden items-center gap-8 md:flex">
