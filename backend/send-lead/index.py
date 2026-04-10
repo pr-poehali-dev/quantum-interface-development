@@ -33,7 +33,7 @@ def handler(event: dict, context) -> dict:
     chat_id = os.environ["TELEGRAM_CHAT_ID"]
 
     text = (
-        "🔔 *Новая заявка с сайта SafeHome*\n\n"
+        "🔔 *Новая заявка с сайта MirHomes*\n\n"
         f"👤 *Имя:* {name}\n"
         f"📞 *Телефон:* {phone}\n"
     )
